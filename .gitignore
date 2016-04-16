@@ -1,3 +1,6 @@
 /.gitignore
 REEDME.TXT
 /tmp/*
+plg_user_usernamecheck.kdev4
+.kdev4/*
+build.xml
