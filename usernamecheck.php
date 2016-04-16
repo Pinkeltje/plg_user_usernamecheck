@@ -1,9 +1,9 @@
 <?php
 /**
  * @package     Joomla.Plugin
- * @subpackage  User.joomla
+ * @subpackage  User.usernamecheck
  *
- * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2016 framontb. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -14,8 +14,9 @@ use Joomla\String\StringHelper;
 
 /**
  * Check if field 'username' (in com_user register form), meets some requirements:
- *   - Minimum number of letters (if no specified, no limit apply).
- *
+ *   - Minimum number of characters (if no specified or 0, no limit apply).
+ *   - Maximum number of characters (if no specified or 0, no limit apply).
+ *   - username spelling compliant with user defined charset
  */
 class PlgUserUsernameCheck extends JPlugin
 {
@@ -26,6 +27,14 @@ class PlgUserUsernameCheck extends JPlugin
 	 * @since  3.2
 	 */
 	protected $app;
+	
+	/**
+	 * Load the language file on instantiation.
+	 *
+	 * @var    boolean
+	 * @since  3.1
+	 */
+	protected $autoloadLanguage = true;
 	
 	/**
 	 * Method to handle the "onUserBeforeSave" event
@@ -43,36 +52,28 @@ class PlgUserUsernameCheck extends JPlugin
 	{
 		// If we aren't saving a "new" user (registration), or if we are not 
 		// in the front end of the site, the let the save happen withour interrption.
-		if (!$isNew || !JFactory::getApplication()->isSite()) {
+		if (!$this->app->isSite()) {
 			return true;
 		}
 		
-		// Load the language file for the plugin
-		$this->loadLanguage();
+		// Result defaults to true
 		$result = true;
 		
 		// Create the input object
-		// http://joomla.stackexchange.com/questions/8883/joomla-3-3-deprecated-function-for-jrequestgetvar
 		$input = JFactory::getApplication()->input;
 		
-		// Get the $username field
-		$username = $data['username'];
-		
 		// Get the number of characters in $username
-		$usernameLenght = StringHelper::strlen($username);
+		$usernameLenght = StringHelper::strlen($data['username']);
 		
 		// CHECK MINIMUM CHARACTER'S NUMBER
 		
 		// Get the minimum number of characters
 		$minNumChars = $this->params->get('minNumChars');
 		
-		// Only check if minNumChars field is set
-		if ($minNumChars != 0){
-			// Check if $usernameLenght achieve minimum lenght
-			if ($usernameLenght < $minNumChars) {
-				$this->app->enqueueMessage(JText::sprintf('PLG_USER_USERNAMECHECK_MINNUMCHARS_REQUIRED', $minNumChars, $username), 'warning');
-				$result = false;
-			}
+		// If is set minNumChars and $usernameLenght does't achieve minimum lenght
+		if (($minNumChars) && ($usernameLenght < $minNumChars)){
+			$this->app->enqueueMessage(JText::sprintf('PLG_USER_USERNAMECHECK_MINNUMCHARS_REQUIRED', $minNumChars, $data['username']), 'warning');
+			$result = false;
 		}
 		
 		// CHECK MAXIMUM CHARACTER'S NUMBER
@@ -80,13 +81,10 @@ class PlgUserUsernameCheck extends JPlugin
 		// Get the minimum number of characters
 		$maxNumChars = $this->params->get('maxNumChars');
 		
-		// Only check if maxNumChars field is set
-		if ($maxNumChars != 0){
-			// Check if $usernameLenght achieve minimum lenght
-			if ($usernameLenght > $maxNumChars) {
-				$this->app->enqueueMessage(JText::sprintf('PLG_USER_USERNAMECHECK_MAXNUMCHARS_REQUIRED', $maxNumChars, $username), 'warning');
-				$result = false;
-			}
+		// If is set maxNumChars and $usernameLenght surpass maximum lenght
+		if (($maxNumChars) && ($usernameLenght > $maxNumChars)){
+			$this->app->enqueueMessage(JText::sprintf('PLG_USER_USERNAMECHECK_MAXNUMCHARS_REQUIRED', $maxNumChars, $data['username']), 'warning');
+			$result = false;
 		}
 		
 		// CHECK IF USERNAME SPELLING IN CHARACTER SET
@@ -97,7 +95,7 @@ class PlgUserUsernameCheck extends JPlugin
 		// Only check if $charset field is set
 		if (!empty($charset)) {
 			// Convert username to an array of characters
-			$usernameSpelling = array_unique(StringHelper::str_split($username));
+			$usernameSpelling = array_unique(StringHelper::str_split($data['username']));
 			
 			// Buffer for non-compliance characters
 			$notAllowedCharsArray = array();
