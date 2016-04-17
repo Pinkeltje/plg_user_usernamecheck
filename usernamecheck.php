@@ -50,18 +50,14 @@ class PlgUserUsernameCheck extends JPlugin
 	 */
 	public function onUserBeforeSave($user, $isNew, $data)
 	{
-		// If we aren't saving a "new" user (registration), or if we are not 
-		// in the front end of the site, the let the save happen withour interrption.
+		// If we are not in the front end of the site, finish
 		if (!$this->app->isSite()) {
 			return true;
 		}
 		
 		// Result defaults to true
 		$result = true;
-		
-		// Create the input object
-		$input = JFactory::getApplication()->input;
-		
+
 		// Get the number of characters in $username
 		$usernameLenght = StringHelper::strlen($data['username']);
 		
