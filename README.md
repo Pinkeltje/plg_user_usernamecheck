@@ -5,5 +5,6 @@ This **Joomla plugin** checks that **username spelling** meets some requirements
 * username spelling compliant with user defined charset
 
 Instructions:
-* Install the plugin and enable it.
+* Click the "download zip" button and save it in your computer.
+* Install the plugin in your joomla! (3.x version) and enable it.
 * Configure settings and done !
