@@ -85,31 +85,19 @@ class PlgUserUsernameCheck extends JPlugin
 		
 		// CHECK IF USERNAME SPELLING IN CHARACTER SET
 		
-		// Get the charset specified in the plugin's parameters
-		$charset = $this->params->get('charset');
+		// Get the charset specified in the parameters
+		$charset = array_unique(StringHelper::str_split($this->params->get('charset')));
 		
-		// Only check if $charset field is set
-		if (!empty($charset)) {
-			// Convert username to an array of characters
-			$usernameSpelling = array_unique(StringHelper::str_split($data['username']));
-			
-			// Buffer for non-compliance characters
-			$notAllowedCharsArray = array();
-			
-			// Walk the $usernameSpelling array looking for not allowed characters
-			foreach ($usernameSpelling as $char) {
-				// If the $char is not in charset, store it in buffer.
-				if (StringHelper::strpos($charset, $char) === false) {
-					$notAllowedCharsArray[] = $char;
-				}
-			}
-			
-			// If there are $chars not allowed, report it
-			if (count($notAllowedCharsArray)) {
-				$notAllowedCharsString = implode(" ", $notAllowedCharsArray);
-				$this->app->enqueueMessage(JText::sprintf('PLG_USER_USERNAMECHECK_CHARSET_REQUIRED', $notAllowedCharsString), 'warning');
-				$result = false;
-			}
+		// Get the username
+		$uname = array_unique(StringHelper::str_split($data['username']));
+		
+		// Get the valid chars
+		$invalid_chars = array_diff($uname, $charset);
+		
+		// Check if all the $uname chars are valid chars
+		if (!empty($invalid_chars)) {
+			$this->app->enqueueMessage(JText::sprintf('PLG_USER_USERNAMECHECK_CHARSET_REQUIRED', implode(' ', $invalid_chars)), 'warning');
+			$result = false;
 		}
 		
 		// Return result
