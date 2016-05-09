@@ -54,6 +54,8 @@ class PlgUserUsernameCheck extends JPlugin
 	{
 		// Result defaults to true
 		$result = true;
+		
+		$value = $data['username'];
 
 		// Get the config params for username
 		$params = JComponentHelper::getParams('com_users');
