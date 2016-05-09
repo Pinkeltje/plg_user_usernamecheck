@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="3.1" type="plugin" group="user" method="upgrade">
 	<name>plg_user_usernamecheck</name>
-	<author>Joomla! Project</author>
+	<author>framontb</author>
 	<creationDate>April 2016</creationDate>
-	<copyright>Copyright (C) 2005 - 2016 Open Source Matters. All rights reserved.</copyright>
+	<copyright>Copyright (C) 2005 - 2016 framontb. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
-	<authorEmail>admin@joomla.org</authorEmail>
-	<authorUrl>www.joomla.org</authorUrl>
+	<authorEmail>framontb@users.noreply.github.com</authorEmail>
+	<authorUrl>https://github.com/framontb/plg_user_usernamecheck</authorUrl>
 	<version>3.0.0</version>
 	<description>PLG_USER_USERNAMECHECK_XML_DESCRIPTION</description>
 	<files>
@@ -20,28 +20,70 @@
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="minNumChars" type="text"
-					size="4"  
-					value="3"
-					filter="int"
-					label="PLG_USER_USERNAMECHECK_FIELD_MINNUMCHARS_LABEL"
-					description="PLG_USER_USERNAMECHECK_FIELD_MINNUMCHARS_DESC" 
-				/>
-				<field name="maxNumChars" type="text"
-					size="4" 
-					value="20"
-					filter="int"
-					label="PLG_USER_USERNAMECHECK_FIELD_MAXNUMCHARS_LABEL"
-					description="PLG_USER_USERNAMECHECK_FIELD_MAXNUMCHARS_DESC" 
-				/>
-				<field name="charset" type="textarea"
-					rows="4" 
-					cols="50" 
-					value="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_"
-					filter="string"
-					label="PLG_USER_USERNAMECHECK_FIELD_CHARSET_LABEL"
-					description="PLG_USER_USERNAMECHECK_FIELD_CHARSET_DESC" 
-				/>
+		<field
+			name="minimum_length_username"
+			type="integer"
+			label="PLG_USER_USERNAMECHECK_FIELD_USERNAME_MINNUMCHARS_LABEL"
+			description="PLG_USER_USERNAMECHECK_FIELD_USERNAME_MINNUMCHARS_DESC"
+			first="0"
+			last="99"
+			step="1">
+			</field>
+			
+		<field
+			name="maximum_length_username"
+			type="integer"
+			label="PLG_USER_USERNAMECHECK_FIELD_USERNAME_MAXNUMCHARS_LABEL"
+			description="PLG_USER_USERNAMECHECK_FIELD_USERNAME_MAXNUMCHARS_DESC"
+			first="0"
+			last="99"
+			step="1">
+			</field>
+
+		<field 
+			name="allowed_chars_username_preset" 
+			type="list"
+			label="PLG_USER_USERNAMECHECK_FIELD_USERNAME_CHARSPRESET_LABEL"
+			description="PLG_USER_USERNAMECHECK_FIELD_USERNAME_CHARSPRESET_DESC"
+			filter="integer"
+			defaut="0"
+			>
+			<option value="0">
+				PLG_USER_USERNAMECHECK_FIELD_USERNAME_CHARSPRESET_OPTION_DISABLECHECK
+			</option>
+			<option value="1">
+				PLG_USER_USERNAMECHECK_FIELD_USERNAME_CHARSPRESET_OPTION_CUSTOM_ALLOWED
+			</option>
+			<option value="2">
+				PLG_USER_USERNAMECHECK_FIELD_USERNAME_CHARSPRESET_OPTION_CUSTOM_FORBIDDEN
+			</option>
+			<option value="3">
+				PLG_USER_USERNAMECHECK_FIELD_USERNAME_CHARSPRESET_OPTION_CUSTOM_REGEXP
+			</option>
+			<option value="4">
+				PLG_USER_USERNAMECHECK_FIELD_USERNAME_CHARSPRESET_OPTION_ALPHANUMERIC
+			</option>
+			<option value="5">
+				PLG_USER_USERNAMECHECK_FIELD_USERNAME_CHARSPRESET_OPTION_LATIN
+			</option>
+			<option value="6">
+				PLG_USER_USERNAMECHECK_FIELD_USERNAME_CHARSPRESET_OPTION_UNICODE_HIGHLY_RESTRICTIVE
+			</option>
+			<option value="7">
+				PLG_USER_USERNAMECHECK_FIELD_USERNAME_CHARSPRESET_OPTION_EMAIL
+			</option>
+		</field>
+
+		<field 
+			name="custom_chars_username" 
+			type="textarea"
+			label="PLG_USER_USERNAMECHECK_FIELD_USERNAME_CHARSET_LABEL"
+			description="PLG_USER_USERNAMECHECK_FIELD_USERNAME_CHARSET_DESC" 
+			rows="4" 
+			cols="50"
+			filter="string"
+			>
+			</field>
 			</fieldset>
 
 		</fields>
