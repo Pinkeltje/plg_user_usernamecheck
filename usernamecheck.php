@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     Joomla.Plugin
+ * @package     Framontb.Plugin
  * @subpackage  User.usernamecheck
  *
  * @copyright   Copyright (C) 2005 - 2016 framontb. All rights reserved.
@@ -16,7 +16,7 @@ use Joomla\String\StringHelper;
  * Check if field 'username' (in com_user register form), meets some requirements:
  *   - Minimum number of characters (if no specified or 0, no limit apply).
  *   - Maximum number of characters (if no specified or 0, no limit apply).
- *   - username spelling compliant with user defined charset
+ *   - username spelling compliant with defined character presets
  */
 class PlgUserUsernameCheck extends JPlugin
 {
@@ -299,6 +299,5 @@ class PlgUserUsernameCheck extends JPlugin
 
 		return $result;
 	}
-		
-	}
+
 }
