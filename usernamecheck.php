@@ -11,8 +11,6 @@
 defined('_JEXEC') or die;
 
 use Joomla\String\StringHelper;
-use Joomla\Registry\Registry;
-use Joomla\String\StringHelper;
 
 /**
  * Check if field 'username' (in com_user register form), meets some requirements:
@@ -57,15 +55,12 @@ class PlgUserUsernameCheck extends JPlugin
 		
 		$value = $data['username'];
 
-		// Get the config params for username
-		$params = JComponentHelper::getParams('com_users');
-
 		// CHECK MINIMUM CHARACTER'S NUMBER
 		// Get the number of characters in $username
 		$usernameLenght = StringHelper::strlen($value);
 
 		// Get the minimum number of characters
-		$minNumChars = $params->get('minimum_length_username');
+		$minNumChars = $this->params->get('minimum_length_username');
 
 		// If is set minNumChars and $usernameLenght does't achieve minimum lenght
 		if (($minNumChars) && ($usernameLenght < $minNumChars))
@@ -76,7 +71,7 @@ class PlgUserUsernameCheck extends JPlugin
 
 		// CHECK MAXIMUM CHARACTER'S NUMBER
 		// Get the maximum number of characters
-		$maxNumChars = $params->get('maximum_length_username');
+		$maxNumChars = $this->params->get('maximum_length_username');
 
 		// If is set maxNumChars and $usernameLenght surpass maximum lenght
 		if (($maxNumChars) && ($usernameLenght > $maxNumChars))
@@ -87,7 +82,7 @@ class PlgUserUsernameCheck extends JPlugin
 
 		// CHECK IF USERNAME SPELLING IN ALLOWED CHARACTER SET
 		// Get preset option
-		$allowed_preset = $params->get('allowed_chars_username_preset');
+		$allowed_preset = $this->params->get('allowed_chars_username_preset');
 
 		if ($allowed_preset)
 		{
@@ -95,7 +90,7 @@ class PlgUserUsernameCheck extends JPlugin
 			{
 				case 1: // CUSTOM ALLOWED
 				case 2: // CUSTOM FORBIDDEN
-					$customCharsUsername = array_unique(StringHelper::str_split($params->get('custom_chars_username')));
+					$customCharsUsername = array_unique(StringHelper::str_split($this->params->get('custom_chars_username')));
 
 					// Get the username
 					$uname = array_unique(StringHelper::str_split($value));
@@ -122,7 +117,7 @@ class PlgUserUsernameCheck extends JPlugin
 				case 3:
 					// CUSTOM IS REGEXP
 					// All that match is rejected
-					$regExp = (string) $params->get('custom_chars_username');
+					$regExp = (string) $this->params->get('custom_chars_username');
 
 					if (preg_match_all($regExp, $value, $nonRegExpChars))
 					{
