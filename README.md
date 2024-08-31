@@ -6,7 +6,7 @@ This **Joomla plugin** checks that **username spelling** meets some requirements
 
 ###Instructions:
 * Click the "download zip" button and save it in your computer.
-* Install the plugin in your joomla! (3.x version) and enable it.
+* Install the plugin in your joomla! (3.x version and above) and enable it.
 * Configure settings and done !
 
 ###Why this plugin?
