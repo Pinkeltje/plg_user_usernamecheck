@@ -50,6 +50,14 @@ class PlgUserUsernameCheck extends JPlugin
 	 */
 	public function onUserBeforeSave($user, $isNew, $data)
 	{
+	 $app = JFactory::getApplication();
+        
+        $controller = $app->input->get('controller', 'login', 'cmd'); // for J5
+        $task = $app->input->get('controller', 'login', 'cmd');
+
+        if(preg_match("/reset/", $task) || preg_match("/reset/", $controller))
+            return true;
+
 		// Result defaults to true
 		$result = true;
 		
